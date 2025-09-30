@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Mes matchs - Onlyz{% endblock %}
+
+{% block content %}
+<div class="bg-white rounded-lg shadow-xl p-6">
+    <h2 class="text-3xl font-bold text-gray-800 mb-6">Mes matchs 💕</h2>
+    
+    {% if users %}
+        <div class="grid md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {% for user in users %}
+                <div class="bg-gray-50 rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow">
+                    {% if user.profile.profile_picture %}
+                        <img src="{{ url_for('static', filename=user.profile.profile_picture) }}" alt="{{ user.username }}" class="w-full h-64 object-cover">
+                    {% else %}
+                        <div class="w-full h-64 bg-gradient-to-r from-purple-400 to-pink-400 flex items-center justify-center">
+                            <span class="text-white text-6xl font-bold">{{ user.username[0].upper() }}</span>
+                        </div>
+                    {% endif %}
+                    
+                    <div class="p-4">
+                        <h3 class="text-xl font-bold text-gray-800">{{ user.username }}</h3>
+                        <p class="text-gray-600">{{ user.profile.get_age() }} ans</p>
+                        
+                        <div class="mt-4 space-y-2">
+                            <a href="{{ url_for('view_profile', user_id=user.id) }}" class="block w-full text-center bg-purple-600 text-white hover:bg-purple-700 px-4 py-2 rounded-lg font-medium">
+                                Voir le profil
+                            </a>
+                            <a href="{{ url_for('chat', user_id=user.id) }}" class="block w-full text-center bg-green-600 text-white hover:bg-green-700 px-4 py-2 rounded-lg font-medium">
+                                💬 Message
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-gray-600 text-center py-12">Vous n'avez pas encore de matchs. Continuez à liker des profils !</p>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}Recherche - Onlyz{% endblock %}
+
+{% block content %}
+<div class="bg-white rounded-lg shadow-xl p-6 mb-6">
+    <h2 class="text-3xl font-bold text-gray-800 mb-6">Recherche avancée 🔍</h2>
+    
+    <form method="POST" action="{{ url_for('search') }}" class="space-y-4">
+        {{ form.hidden_tag() }}
+        
+        <div class="grid md:grid-cols-2 gap-4">
+            <div>
+                <label class="block text-gray-700 font-medium mb-2">{{ form.min_age.label }}</label>
+                {{ form.min_age(class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600") }}
+            </div>
+            
+            <div>
+                <label class="block text-gray-700 font-medium mb-2">{{ form.max_age.label }}</label>
+                {{ form.max_age(class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600") }}
+            </div>
+        </div>
+        
+        <div class="grid md:grid-cols-2 gap-4">
+            <div>
+                <label class="block text-gray-700 font-medium mb-2">{{ form.gender.label }}</label>
+                {{ form.gender(class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600") }}
+            </div>
+            
+            <div>
+                <label class="block text-gray-700 font-medium mb-2">{{ form.max_distance.label }}</label>
+                {{ form.max_distance(class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600") }}
+            </div>
+        </div>
+        
+        <div>
+            <label class="block text-gray-700 font-medium mb-2">{{ form.keywords.label }}</label>
+            {{ form.keywords(class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600") }}
+        </div>
+        
+        <button type="submit" class="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:from-purple-700 hover:to-pink-700 px-4 py-3 rounded-lg font-bold">
+            Rechercher
+        </button>
+    </form>
+</div>
+
+{% if results %}
+    <div class="bg-white rounded-lg shadow-xl p-6">
+        <h3 class="text-2xl font-bold text-gray-800 mb-6">Résultats ({{ results|length }})</h3>
+        
+        <div class="grid md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {% for user in results %}
+                <div class="bg-gray-50 rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow">
+                    {% if user.profile.profile_picture %}
+                        <img src="{{ url_for('static', filename=user.profile.profile_picture) }}" alt="{{ user.username }}" class="w-full h-64 object-cover">
+                    {% else %}
+                        <div class="w-full h-64 bg-gradient-to-r from-purple-400 to-pink-400 flex items-center justify-center">
+                            <span class="text-white text-6xl font-bold">{{ user.username[0].upper() }}</span>
+                        </div>
+                    {% endif %}
+                    
+                    <div class="p-4">
+                        <h3 class="text-xl font-bold text-gray-800">{{ user.username }}</h3>
+                        <p class="text-gray-600">{{ user.profile.get_age() }} ans</p>
+                        
+                        <div class="mt-4">
+                            <a href="{{ url_for('view_profile', user_id=user.id) }}" class="block w-full text-center bg-purple-600 text-white hover:bg-purple-700 px-4 py-2 rounded-lg font-medium">
+                                Voir le profil
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endif %}
+{% endblock %}

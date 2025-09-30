@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %}{{ user.username }} - Onlyz{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto bg-white rounded-lg shadow-xl overflow-hidden">
+    <div class="md:flex">
+        <div class="md:w-1/3">
+            {% if user.profile.profile_picture %}
+                <img src="{{ url_for('static', filename=user.profile.profile_picture) }}" alt="{{ user.username }}" class="w-full h-96 object-cover">
+            {% else %}
+                <div class="w-full h-96 bg-gradient-to-r from-purple-400 to-pink-400 flex items-center justify-center">
+                    <span class="text-white text-8xl font-bold">{{ user.username[0].upper() }}</span>
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="md:w-2/3 p-8">
+            <h2 class="text-4xl font-bold text-gray-800 mb-2">{{ user.username }}</h2>
+            <p class="text-xl text-gray-600 mb-4">{{ user.profile.get_age() }} ans</p>
+            
+            {% if user.profile.city %}
+                <p class="text-gray-600 mb-2">📍 {{ user.profile.city }}{% if user.profile.country %}, {{ user.profile.country }}{% endif %}</p>
+            {% endif %}
+            
+            {% if distance %}
+                <p class="text-gray-600 mb-4">📏 À {{ "%.1f"|format(distance) }} km de vous</p>
+            {% endif %}
+            
+            {% if user.profile.bio %}
+                <div class="mb-6">
+                    <h3 class="text-lg font-bold text-gray-800 mb-2">À propos</h3>
+                    <p class="text-gray-700">{{ user.profile.bio }}</p>
+                </div>
+            {% endif %}
+            
+            <div class="flex space-x-2">
+                {% if is_matched %}
+                    <a href="{{ url_for('chat', user_id=user.id) }}" class="bg-green-600 text-white hover:bg-green-700 px-6 py-3 rounded-lg font-bold flex-1 text-center">
+                        💬 Envoyer un message
+                    </a>
+                {% else %}
+                    <button onclick="likeUser({{ user.id }})" id="like-btn" class="{% if has_liked %}bg-pink-600{% else %}bg-purple-600{% endif %} text-white hover:opacity-80 px-6 py-3 rounded-lg font-bold flex-1">
+                        {% if has_liked %}💗 Déjà liké{% else %}💜 Liker{% endif %}
+                    </button>
+                {% endif %}
+                
+                <button onclick="reportUser({{ user.id }})" class="bg-yellow-600 text-white hover:bg-yellow-700 px-4 py-3 rounded-lg font-bold">
+                    ⚠️ Signaler
+                </button>
+                
+                <form method="POST" action="{{ url_for('block_user', user_id=user.id) }}" class="inline">
+                    <button type="submit" class="bg-red-600 text-white hover:bg-red-700 px-4 py-3 rounded-lg font-bold">
+                        🚫 Bloquer
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function likeUser(userId) {
+    fetch(`/like/${userId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        const btn = document.getElementById('like-btn');
+        if (data.status === 'liked') {
+            btn.textContent = '💗 Déjà liké';
+            btn.classList.remove('bg-purple-600');
+            btn.classList.add('bg-pink-600');
+            
+            if (data.is_match) {
+                alert('🎉 C\'est un match ! Vous pouvez maintenant discuter ensemble.');
+                location.reload();
+            }
+        } else {
+            btn.textContent = '💜 Liker';
+            btn.classList.remove('bg-pink-600');
+            btn.classList.add('bg-purple-600');
+        }
+    });
+}
+
+function reportUser(userId) {
+    const reason = prompt('Raison du signalement :');
+    if (reason) {
+        fetch(`/report/${userId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `reason=${encodeURIComponent(reason)}`
+        })
+        .then(() => {
+            alert('Utilisateur signalé');
+            window.location.href = '/browse';
+        });
+    }
+}
+</script>
+{% endblock %}

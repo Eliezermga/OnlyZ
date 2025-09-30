@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}Politique de Confidentialité - Onlyz{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto bg-white rounded-lg shadow-xl p-8">
+    <h1 class="text-4xl font-bold text-gray-800 mb-6">Politique de Confidentialité</h1>
+    <p class="text-sm text-gray-600 mb-8">Dernière mise à jour : 30 septembre 2025</p>
+    
+    <div class="space-y-6 text-gray-700">
+        <section>
+            <h2 class="text-2xl font-bold text-gray-800 mb-3">1. Introduction</h2>
+            <p>Bienvenue sur Onlyz. Nous accordons une grande importance à la protection de votre vie privée et de vos données personnelles. Cette politique de confidentialité explique comment nous collectons, utilisons, partageons et protégeons vos informations.</p>
+        </section>
+        
+        <section>
+            <h2 class="text-2xl font-bold text-gray-800 mb-3">2. Données Collectées</h2>
+            <p class="mb-2">Nous collectons les types de données suivants :</p>
+            <ul class="list-disc list-inside space-y-2 ml-4">
+                <li><strong>Informations de compte :</strong> Nom d'utilisateur, adresse email, mot de passe (chiffré)</li>
+                <li><strong>Informations de profil :</strong> Prénom, nom, date de naissance, genre, orientation, bio, photos de profil</li>
+                <li><strong>Données de localisation :</strong> Ville, pays, coordonnées géographiques (si vous les fournissez)</li>
+                <li><strong>Interactions :</strong> Likes, matchs, messages, signalements</li>
+                <li><strong>Données techniques :</strong> Adresse IP, type de navigateur, données de connexion</li>
+            </ul>
+        </section>
+        
+        <section>
+            <h2 class="text-2xl font-bold text-gray-800 mb-3">3. Utilisation des Données</h2>
+            <p class="mb-2">Nous utilisons vos données pour :</p>
+            <ul class="list-disc list-inside space-y-2 ml-4">
+                <li>Créer et gérer votre compte</li>
+                <li>Vous proposer des profils compatibles grâce à notre algorithme de recommandation</li>
+                <li>Permettre la communication entre utilisateurs matchés</li>
+                <li>Améliorer nos services et votre expérience</li>
+                <li>Assurer la sécurité de la plateforme et prévenir les abus</li>
+                <li>Vous envoyer des notifications importantes (nouveaux matchs, messages)</li>
+            </ul>
+        </section>
+        
+        <section>
+            <h2 class="text-2xl font-bold text-gray-800 mb-3">4. Partage des Données</h2>
+            <p>Nous ne vendons jamais vos données personnelles. Vos informations peuvent être visibles par :</p>
+            <ul class="list-disc list-inside space-y-2 ml-4">
+                <li>Les autres utilisateurs de la plateforme (dans les limites que vous définissez)</li>
+                <li>Les utilisateurs avec qui vous avez matché (pour la messagerie)</li>
+            </ul>
+            <p class="mt-2">Nous pouvons partager des données anonymisées avec nos partenaires pour des analyses statistiques.</p>
+        </section>
+        
+        <section>
+            <h2 class="text-2xl font-bold text-gray-800 mb-3">5. Sécurité</h2>
+            <p>Nous mettons en œuvre des mesures de sécurité pour protéger vos données :</p>
+            <ul class="list-disc list-inside space-y-2 ml-4">
+                <li>Chiffrement des mots de passe avec des algorithmes sécurisés (bcrypt)</li>
+                <li>Connexion HTTPS sécurisée</li>
+                <li>Protection CSRF sur tous les formulaires</li>
+                <li>Vérification de l'email à l'inscription</li>
+                <li>Surveillance et prévention des abus</li>
+            </ul>
+        </section>
+        
+        <section>
+            <h2 class="text-2xl font-bold text-gray-800 mb-3">6. Vos Droits</h2>
+            <p class="mb-2">Conformément au RGPD, vous disposez des droits suivants :</p>
+            <ul class="list-disc list-inside space-y-2 ml-4">
+                <li><strong>Droit d'accès :</strong> Vous pouvez demander une copie de vos données</li>
+                <li><strong>Droit de rectification :</strong> Vous pouvez modifier vos informations à tout moment</li>
+                <li><strong>Droit à l'effacement :</strong> Vous pouvez supprimer votre compte et vos données</li>
+                <li><strong>Droit d'opposition :</strong> Vous pouvez vous opposer au traitement de vos données</li>
+                <li><strong>Droit à la portabilité :</strong> Vous pouvez récupérer vos données dans un format lisible</li>
+            </ul>
+        </section>
+        
+        <section>
+            <h2 class="text-2xl font-bold text-gray-800 mb-3">7. Cookies</h2>
+            <p>Nous utilisons des cookies essentiels pour le fonctionnement du site (authentification, préférences). Vous pouvez désactiver les cookies dans votre navigateur, mais cela peut affecter certaines fonctionnalités.</p>
+        </section>
+        
+        <section>
+            <h2 class="text-2xl font-bold text-gray-800 mb-3">8. Conservation des Données</h2>
+            <p>Nous conservons vos données aussi longtemps que votre compte est actif. Après la suppression de votre compte, vos données sont effacées dans un délai de 30 jours, sauf obligation légale de conservation.</p>
+        </section>
+        
+        <section>
+            <h2 class="text-2xl font-bold text-gray-800 mb-3">9. Modifications</h2>
+            <p>Nous pouvons modifier cette politique de confidentialité à tout moment. Les modifications importantes vous seront notifiées par email.</p>
+        </section>
+        
+        <section>
+            <h2 class="text-2xl font-bold text-gray-800 mb-3">10. Contact</h2>
+            <p>Pour toute question concernant cette politique ou vos données personnelles, contactez-nous à : <a href="mailto:privacy@onlyz.com" class="text-purple-600 hover:text-purple-800">privacy@onlyz.com</a></p>
+        </section>
+    </div>
+    
+    <div class="mt-8 pt-6 border-t border-gray-200">
+        <a href="{{ url_for('index') }}" class="text-purple-600 hover:text-purple-800 font-medium">← Retour à l'accueil</a>
+    </div>
+</div>
+{% endblock %}

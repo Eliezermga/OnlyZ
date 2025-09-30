@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="text-center py-20">
+    <h1 class="text-6xl font-bold text-white mb-6">Bienvenue sur Onlyz</h1>
+    <p class="text-2xl text-white mb-12">Le site de rencontre moderne et sécurisé</p>
+    
+    <div class="grid md:grid-cols-3 gap-8 mb-12 max-w-4xl mx-auto">
+        <div class="bg-white p-6 rounded-lg shadow-xl">
+            <div class="text-4xl mb-4">💕</div>
+            <h3 class="text-xl font-bold mb-2 text-gray-800">Trouvez l'amour</h3>
+            <p class="text-gray-600">Rencontrez des personnes qui vous correspondent vraiment</p>
+        </div>
+        
+        <div class="bg-white p-6 rounded-lg shadow-xl">
+            <div class="text-4xl mb-4">🔒</div>
+            <h3 class="text-xl font-bold mb-2 text-gray-800">Sécurisé</h3>
+            <p class="text-gray-600">Vos données sont protégées et votre vie privée respectée</p>
+        </div>
+        
+        <div class="bg-white p-6 rounded-lg shadow-xl">
+            <div class="text-4xl mb-4">🎯</div>
+            <h3 class="text-xl font-bold mb-2 text-gray-800">Algorithme intelligent</h3>
+            <p class="text-gray-600">Des suggestions personnalisées basées sur vos préférences</p>
+        </div>
+    </div>
+    
+    <div class="space-x-4">
+        <a href="{{ url_for('register') }}" class="inline-block bg-white text-purple-600 hover:bg-gray-100 px-8 py-4 rounded-lg text-xl font-bold shadow-xl">
+            Commencer maintenant
+        </a>
+        <a href="{{ url_for('login') }}" class="inline-block bg-transparent border-2 border-white text-white hover:bg-white hover:text-purple-600 px-8 py-4 rounded-lg text-xl font-bold">
+            Se connecter
+        </a>
+    </div>
+</div>
+{% endblock %}

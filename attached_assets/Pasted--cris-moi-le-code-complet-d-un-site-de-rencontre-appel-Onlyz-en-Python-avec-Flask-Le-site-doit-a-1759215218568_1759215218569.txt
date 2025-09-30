@@ -1,0 +1,130 @@
+Écris-moi le code complet d’un site de rencontre appelé "Onlyz" en Python avec Flask.
+Le site doit avoir un design moderne et responsive (utiliser Bootstrap ou TailwindCSS).
+
+1. Gestion des utilisateurs
+
+Inscription avec email, pseudo, mot de passe (hashé)
+
+Connexion et déconnexion
+
+Réinitialisation du mot de passe par email
+
+Vérification d’email à l’inscription
+
+Suppression de compte
+
+2. Profils utilisateurs
+
+Photo(s) de profil (upload sécurisé)
+
+Bio / description
+
+Genre et orientation (qui je recherche)
+
+Âge / date de naissance (avec restriction >18 ans)
+
+Localisation (optionnelle, via GPS ou champ manuel)
+
+3. Parcourir et matcher
+
+Afficher les autres profils avec filtres (âge, genre, distance)
+
+Système de "like"
+
+Système de "match" (si deux personnes se likent)
+
+4. Messagerie
+
+Chat privé texte entre deux utilisateurs qui ont matché
+
+Notifications en temps réel (Flask-SocketIO ou équivalent)
+
+Blocage et signalement d’utilisateurs
+
+5. Recherche avancée
+
+Recherche par mots-clés dans la bio
+
+Recherche par intérêts communs
+
+Recherche par localisation (géolocalisation, calcul de distance)
+
+6. Algorithme de recommandation
+
+Proposer en priorité des profils :
+
+proches géographiquement
+
+correspondant au genre/orientation recherchée
+
+avec intérêts communs
+
+avec historique de likes similaires (système de score de compatibilité simple)
+
+Les recommandations doivent apparaître dans une section spéciale « Suggestions pour vous ».
+
+7. Sécurité
+
+Mots de passe hashés (bcrypt ou werkzeug.security)
+
+Protection CSRF avec Flask-WTF
+
+Validation des formulaires
+
+Authentification à deux facteurs (2FA, optionnel)
+
+Captcha anti-bot à l’inscription
+
+8. Notifications
+
+Email : confirmation d’inscription, nouveau match, nouveau message
+
+Alertes en temps réel dans le site (SocketIO)
+
+9. Administration
+
+Tableau de bord admin avec Flask-Admin
+
+Liste des utilisateurs et signalements
+
+Outil de modération (bannir, supprimer un profil)
+
+Statistiques (nombre de matchs, utilisateurs actifs, etc.)
+
+10. Scalabilité
+
+Base de données PostgreSQL (pas SQLite en production)
+
+ORM avec SQLAlchemy
+
+Migrations avec Flask-Migrate
+
+Gestion des images avec Amazon S3 ou Cloudinary
+
+Architecture prête pour hébergement cloud (Heroku, Render, ou AWS)
+
+Contraintes
+
+Nom de l’application : Onlyz
+
+Code organisé en plusieurs fichiers (app.py, models.py, forms.py, templates/, static/)
+
+Templates en Jinja2 avec design moderne (Bootstrap ou TailwindCSS)
+
+Utiliser Flask-Login pour gérer l’authentification
+
+Code prêt à être exécuté en local et extensible en production
+
+Fournis-moi :
+
+La structure des fichiers et dossiers
+
+Le code complet Flask (routes, modèles, formulaires, templates avec design moderne)
+
+Un exemple de base de données avec SQLAlchemy
+
+Un algorithme de recommandation simple (score basé sur âge, genre, localisation, intérêts communs)
+
+Des instructions pour exécuter le projet en local
+
+Des recommandations pour le déploiement (sécurité, performances, hébergement)

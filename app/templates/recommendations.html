@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Suggestions - Onlyz{% endblock %}
+
+{% block content %}
+<div class="bg-white rounded-lg shadow-xl p-6">
+    <h2 class="text-3xl font-bold text-gray-800 mb-2">Suggestions pour vous 🎯</h2>
+    <p class="text-gray-600 mb-6">Profils sélectionnés en fonction de vos préférences et de votre localisation</p>
+    
+    {% if users %}
+        <div class="grid md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {% for user in users %}
+                <div class="bg-gray-50 rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow">
+                    <a href="{{ url_for('view_profile', user_id=user.id) }}">
+                        {% if user.profile.profile_picture %}
+                            <img src="{{ url_for('static', filename=user.profile.profile_picture) }}" alt="{{ user.username }}" class="w-full h-64 object-cover">
+                        {% else %}
+                            <div class="w-full h-64 bg-gradient-to-r from-purple-400 to-pink-400 flex items-center justify-center">
+                                <span class="text-white text-6xl font-bold">{{ user.username[0].upper() }}</span>
+                            </div>
+                        {% endif %}
+                    </a>
+                    
+                    <div class="p-4">
+                        <h3 class="text-xl font-bold text-gray-800">{{ user.username }}</h3>
+                        <p class="text-gray-600">{{ user.profile.get_age() }} ans</p>
+                        {% if user.profile.city %}
+                            <p class="text-gray-600 text-sm">{{ user.profile.city }}</p>
+                        {% endif %}
+                        
+                        <div class="mt-4">
+                            <a href="{{ url_for('view_profile', user_id=user.id) }}" class="block w-full text-center bg-purple-600 text-white hover:bg-purple-700 px-4 py-2 rounded-lg font-medium">
+                                Voir le profil
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-gray-600 text-center py-12">Aucune suggestion disponible pour le moment. Complétez votre profil pour de meilleures recommandations.</p>
+    {% endif %}
+</div>
+{% endblock %}

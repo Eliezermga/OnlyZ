@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Notifications - Onlyz{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto bg-white rounded-lg shadow-xl p-6">
+    <h2 class="text-3xl font-bold text-gray-800 mb-6">Notifications 🔔</h2>
+    
+    {% if notifications %}
+        <div class="space-y-4">
+            {% for notif in notifications %}
+                <div class="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-gray-800">{{ notif.content }}</p>
+                            <p class="text-sm text-gray-500 mt-1">{{ notif.created_at.strftime('%d/%m/%Y à %H:%M') }}</p>
+                        </div>
+                        {% if notif.related_user_id %}
+                            <a href="{{ url_for('view_profile', user_id=notif.related_user_id) }}" class="bg-purple-600 text-white hover:bg-purple-700 px-4 py-2 rounded-lg text-sm font-medium">
+                                Voir le profil
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-gray-600 text-center py-12">Aucune notification</p>
+    {% endif %}
+</div>
+{% endblock %}
