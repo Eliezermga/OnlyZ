@@ -63,6 +63,21 @@ def allowed_file(filename):
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+@app.route('/init-db')
+def init_db():
+    try:
+        # Créer toutes les tables
+        db.create_all()
+        
+        # Vérifier que les tables existent
+        from sqlalchemy import inspect
+        inspector = inspect(db.engine)
+        tables = inspector.get_table_names()
+        
+        return f"Tables créées avec succès: {tables}"
+    except Exception as e:
+        return f"Erreur: {str(e)}"
+
 
 @app.before_request
 def before_request():
