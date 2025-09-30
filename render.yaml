@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: onlyz
+    env: python
+    plan: free
+    buildCommand: |
+      pip install -r requirements.txt
+      flask db upgrade
+    startCommand: gunicorn app:app
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: onlyz-db
+          property: connectionString
+databases:
+  - name: onlyz-db

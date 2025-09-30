@@ -214,43 +214,6 @@ onlyz/
 5. **Utiliser un service de stockage cloud pour les images (AWS S3, Cloudinary)**
 6. **Configurer des sauvegardes régulières de la base de données**
 
-### Déploiement sur Heroku
-
-```bash
-# Installer Heroku CLI
-heroku login
-
-# Créer une app
-heroku create onlyz-app
-
-# Ajouter PostgreSQL
-heroku addons:create heroku-postgresql:hobby-dev
-
-# Configurer les variables d'environnement
-heroku config:set SESSION_SECRET=votre_cle_secrete
-heroku config:set MAIL_USERNAME=votre_email
-heroku config:set MAIL_PASSWORD=votre_password
-
-# Créer un Procfile
-echo "web: gunicorn app:app" > Procfile
-
-# Déployer
-git push heroku main
-
-# Initialiser la base de données
-heroku run python -c "from app import app, db; app.app_context().push(); db.create_all()"
-```
-
-### Déploiement sur Render
-
-1. Créer un compte sur [Render.com](https://render.com)
-2. Créer un nouveau "Web Service"
-3. Connecter votre repository Git
-4. Configurer :
-   - **Build Command** : `pip install -r requirements.txt`
-   - **Start Command** : `gunicorn app:app`
-5. Ajouter une base de données PostgreSQL
-6. Configurer les variables d'environnement dans le dashboard
 
 ### Déploiement sur VPS (DigitalOcean, AWS, etc.)
 
