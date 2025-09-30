@@ -19,24 +19,49 @@
             <div class="flex justify-between h-16">
                 <div class="flex items-center">
                     <a href="{{ url_for('index') }}" class="flex-shrink-0 flex items-center">
-                        <span class="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Onlyz</span>
+                        <span class="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Onlyz</span>
                     </a>
                 </div>
                 
-                <div class="flex items-center space-x-4">
+                <div class="hidden md:flex items-center space-x-2 lg:space-x-4">
                     {% if current_user.is_authenticated %}
-                        <a href="{{ url_for('browse') }}" class="text-gray-700 hover:text-purple-600 px-3 py-2 rounded-md text-sm font-medium">Parcourir</a>
-                        <a href="{{ url_for('recommendations') }}" class="text-gray-700 hover:text-purple-600 px-3 py-2 rounded-md text-sm font-medium">Suggestions</a>
-                        <a href="{{ url_for('matches') }}" class="text-gray-700 hover:text-purple-600 px-3 py-2 rounded-md text-sm font-medium">Matchs</a>
-                        <a href="{{ url_for('search') }}" class="text-gray-700 hover:text-purple-600 px-3 py-2 rounded-md text-sm font-medium">Recherche</a>
-                        <a href="{{ url_for('notifications') }}" class="text-gray-700 hover:text-purple-600 px-3 py-2 rounded-md text-sm font-medium">Notifications</a>
-                        <a href="{{ url_for('my_profile') }}" class="text-gray-700 hover:text-purple-600 px-3 py-2 rounded-md text-sm font-medium">Mon profil</a>
-                        <a href="{{ url_for('logout') }}" class="bg-red-500 text-white hover:bg-red-600 px-4 py-2 rounded-md text-sm font-medium">Déconnexion</a>
+                        <a href="{{ url_for('browse') }}" class="text-gray-700 hover:text-purple-600 px-2 lg:px-3 py-2 rounded-md text-sm font-medium">Parcourir</a>
+                        <a href="{{ url_for('recommendations') }}" class="text-gray-700 hover:text-purple-600 px-2 lg:px-3 py-2 rounded-md text-sm font-medium">Suggestions</a>
+                        <a href="{{ url_for('matches') }}" class="text-gray-700 hover:text-purple-600 px-2 lg:px-3 py-2 rounded-md text-sm font-medium">Matchs</a>
+                        <a href="{{ url_for('search') }}" class="text-gray-700 hover:text-purple-600 px-2 lg:px-3 py-2 rounded-md text-sm font-medium">Recherche</a>
+                        <a href="{{ url_for('notifications') }}" class="text-gray-700 hover:text-purple-600 px-2 lg:px-3 py-2 rounded-md text-sm font-medium">Notifications</a>
+                        <a href="{{ url_for('my_profile') }}" class="text-gray-700 hover:text-purple-600 px-2 lg:px-3 py-2 rounded-md text-sm font-medium">Mon profil</a>
+                        <a href="{{ url_for('logout') }}" class="bg-red-500 text-white hover:bg-red-600 px-3 lg:px-4 py-2 rounded-md text-sm font-medium">Déconnexion</a>
                     {% else %}
                         <a href="{{ url_for('login') }}" class="text-gray-700 hover:text-purple-600 px-3 py-2 rounded-md text-sm font-medium">Connexion</a>
                         <a href="{{ url_for('register') }}" class="bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:from-purple-700 hover:to-pink-700 px-4 py-2 rounded-md text-sm font-medium">Inscription</a>
                     {% endif %}
                 </div>
+                
+                <div class="flex md:hidden items-center">
+                    <button id="mobile-menu-button" class="text-gray-700 hover:text-purple-600 p-2">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-200">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                {% if current_user.is_authenticated %}
+                    <a href="{{ url_for('browse') }}" class="block text-gray-700 hover:bg-purple-50 hover:text-purple-600 px-3 py-2 rounded-md text-base font-medium">Parcourir</a>
+                    <a href="{{ url_for('recommendations') }}" class="block text-gray-700 hover:bg-purple-50 hover:text-purple-600 px-3 py-2 rounded-md text-base font-medium">Suggestions</a>
+                    <a href="{{ url_for('matches') }}" class="block text-gray-700 hover:bg-purple-50 hover:text-purple-600 px-3 py-2 rounded-md text-base font-medium">Matchs</a>
+                    <a href="{{ url_for('search') }}" class="block text-gray-700 hover:bg-purple-50 hover:text-purple-600 px-3 py-2 rounded-md text-base font-medium">Recherche</a>
+                    <a href="{{ url_for('notifications') }}" class="block text-gray-700 hover:bg-purple-50 hover:text-purple-600 px-3 py-2 rounded-md text-base font-medium">Notifications</a>
+                    <a href="{{ url_for('my_profile') }}" class="block text-gray-700 hover:bg-purple-50 hover:text-purple-600 px-3 py-2 rounded-md text-base font-medium">Mon profil</a>
+                    <a href="{{ url_for('logout') }}" class="block bg-red-500 text-white hover:bg-red-600 px-3 py-2 rounded-md text-base font-medium text-center">Déconnexion</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}" class="block text-gray-700 hover:bg-purple-50 hover:text-purple-600 px-3 py-2 rounded-md text-base font-medium">Connexion</a>
+                    <a href="{{ url_for('register') }}" class="block bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:from-purple-700 hover:to-pink-700 px-3 py-2 rounded-md text-base font-medium text-center">Inscription</a>
+                {% endif %}
             </div>
         </div>
     </nav>
@@ -66,6 +91,18 @@
         </div>
     </footer>
     
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            if (mobileMenuButton && mobileMenu) {
+                mobileMenuButton.addEventListener('click', function() {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+        });
+    </script>
     {% block scripts %}{% endblock %}
 </body>
 </html>

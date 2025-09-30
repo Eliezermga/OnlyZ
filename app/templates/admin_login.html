@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Connexion Admin - Onlyz{% endblock %}
+
+{% block content %}
+<div class="max-w-md mx-auto">
+    <div class="bg-white rounded-lg shadow-xl p-6 sm:p-8">
+        <h2 class="text-2xl sm:text-3xl text-center font-bold text-gray-800 mb-3 sm:mb-4">🔐 Administration</h2>
+        <p class="text-center text-gray-600 mb-4 sm:mb-6 text-sm sm:text-base">Espace réservé aux administrateurs</p>
+        
+        <form method="POST">
+            <div class="mb-4 sm:mb-6">
+                <label for="password" class="block text-gray-700 font-medium mb-2 text-sm sm:text-base">Mot de passe administrateur</label>
+                <input type="password" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600 text-sm sm:text-base" id="password" name="password" required autofocus>
+            </div>
+            
+            <button type="submit" class="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:from-purple-700 hover:to-pink-700 px-4 py-3 rounded-lg font-bold text-sm sm:text-base">
+                Se connecter
+            </button>
+        </form>
+        
+        <div class="text-center mt-4">
+            <a href="{{ url_for('index') }}" class="text-gray-600 hover:text-purple-600 text-sm sm:text-base">Retour à l'accueil</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

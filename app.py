@@ -22,6 +22,17 @@ app = Flask(__name__, template_folder='app/templates', static_folder='app/static
 app.config['SECRET_KEY'] = os.getenv('SESSION_SECRET', os.urandom(24).hex())
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
+    'pool_pre_ping': True,
+    'pool_recycle': 300,
+    'connect_args': {
+        'sslmode': 'require',
+        'keepalives': 1,
+        'keepalives_idle': 30,
+        'keepalives_interval': 10,
+        'keepalives_count': 5
+    }
+}
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 app.config['UPLOAD_FOLDER'] = 'app/static/uploads/profiles'
 
@@ -90,14 +101,11 @@ def register():
             accepted_terms=True
         )
         user.set_password(form.password.data)
-        token = user.generate_verification_token()
         
         db.session.add(user)
         db.session.commit()
         
-        send_verification_email(user, token)
-        
-        flash('Compte créé ! Veuillez vérifier votre email pour activer votre compte.', 'success')
+        flash('Compte créé avec succès ! Vous pouvez maintenant vous connecter.', 'success')
         return redirect(url_for('login'))
     
     return render_template('register.html', form=form)
@@ -112,10 +120,6 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user and user.check_password(form.password.data):
-            if not user.is_verified:
-                flash('Veuillez vérifier votre email avant de vous connecter.', 'warning')
-                return redirect(url_for('login'))
-            
             login_user(user, remember=form.remember_me.data)
             next_page = request.args.get('next')
             
@@ -137,17 +141,68 @@ def logout():
     return redirect(url_for('index'))
 
 
-@app.route('/verify/<token>')
-def verify_email(token):
-    user = User.query.filter_by(verification_token=token).first()
-    if user:
-        user.is_verified = True
-        user.verification_token = None
-        db.session.commit()
-        flash('Votre email a été vérifié ! Vous pouvez maintenant vous connecter.', 'success')
-    else:
-        flash('Token de vérification invalide', 'danger')
-    return redirect(url_for('login'))
+@app.route('/admin/login', methods=['GET', 'POST'])
+def admin_login():
+    if current_user.is_authenticated and current_user.is_admin:
+        return redirect(url_for('admin_dashboard'))
+    
+    if request.method == 'POST':
+        password = request.form.get('password')
+        admin_password = os.getenv('ADMIN_PASSWORD')
+        
+        if not admin_password:
+            flash('Configuration admin manquante. Contactez l\'administrateur système.', 'danger')
+            return redirect(url_for('index'))
+        
+        if password and password == admin_password:
+            admin_user = User.query.filter_by(username='admin').first()
+            
+            if not admin_user:
+                admin_user = User(
+                    username='admin',
+                    email='admin@onlyz.com',
+                    accepted_terms=True,
+                    is_admin=True
+                )
+                admin_user.set_password(admin_password)
+                db.session.add(admin_user)
+                db.session.commit()
+            else:
+                admin_user.is_admin = True
+                admin_user.set_password(admin_password)
+                db.session.commit()
+            
+            login_user(admin_user)
+            flash('Bienvenue dans l\'espace administrateur', 'success')
+            return redirect(url_for('admin_dashboard'))
+        else:
+            flash('Mot de passe administrateur incorrect', 'danger')
+    
+    return render_template('admin_login.html')
+
+
+@app.route('/admin')
+@login_required
+def admin_dashboard():
+    if not current_user.is_admin:
+        flash('Accès refusé. Cette page est réservée aux administrateurs.', 'danger')
+        return redirect(url_for('index'))
+    
+    total_users = User.query.count()
+    total_profiles = Profile.query.count()
+    total_matches = Like.query.count()
+    total_messages = Message.query.count()
+    
+    recent_users = User.query.order_by(User.created_at.desc()).limit(10).all()
+    recent_reports = Report.query.order_by(Report.created_at.desc()).limit(10).all()
+    
+    return render_template('admin.html', 
+                         total_users=total_users,
+                         total_profiles=total_profiles,
+                         total_matches=total_matches,
+                         total_messages=total_messages,
+                         recent_users=recent_users,
+                         recent_reports=recent_reports)
 
 
 @app.route('/profile/create', methods=['GET', 'POST'])
@@ -586,32 +641,6 @@ def get_recommendations(user):
     
     scored_candidates.sort(key=lambda x: x[1], reverse=True)
     return [c[0] for c in scored_candidates[:12]]
-
-
-def send_verification_email(user, token):
-    if not app.config['MAIL_USERNAME']:
-        return
-    
-    try:
-        msg = EmailMessage(
-            subject='Vérification de votre compte Onlyz',
-            recipients=[user.email]
-        )
-        verification_url = url_for('verify_email', token=token, _external=True)
-        msg.body = f'''Bonjour {user.username},
-
-Merci de vous être inscrit sur Onlyz !
-
-Veuillez cliquer sur le lien ci-dessous pour vérifier votre compte :
-{verification_url}
-
-Si vous n'avez pas créé de compte, ignorez cet email.
-
-L'équipe Onlyz
-'''
-        mail.send(msg)
-    except:
-        pass
 
 
 def send_match_email(user1, user2):

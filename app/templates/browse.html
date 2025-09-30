@@ -3,32 +3,32 @@
 {% block title %}Parcourir - Onlyz{% endblock %}
 
 {% block content %}
-<div class="bg-white rounded-lg shadow-xl p-6">
-    <h2 class="text-3xl font-bold text-gray-800 mb-6">Parcourir les profils</h2>
+<div class="bg-white rounded-lg shadow-xl p-4 sm:p-6">
+    <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-4 sm:mb-6">Parcourir les profils</h2>
     
     {% if users.items %}
-        <div class="grid md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
             {% for user in users.items %}
                 <div class="bg-gray-50 rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow">
                     <a href="{{ url_for('view_profile', user_id=user.id) }}">
                         {% if user.profile.profile_picture %}
-                            <img src="{{ url_for('static', filename=user.profile.profile_picture) }}" alt="{{ user.username }}" class="w-full h-64 object-cover">
+                            <img src="{{ url_for('static', filename=user.profile.profile_picture) }}" alt="{{ user.username }}" class="w-full h-48 sm:h-56 md:h-64 object-cover">
                         {% else %}
-                            <div class="w-full h-64 bg-gradient-to-r from-purple-400 to-pink-400 flex items-center justify-center">
-                                <span class="text-white text-6xl font-bold">{{ user.username[0].upper() }}</span>
+                            <div class="w-full h-48 sm:h-56 md:h-64 bg-gradient-to-r from-purple-400 to-pink-400 flex items-center justify-center">
+                                <span class="text-white text-5xl sm:text-6xl font-bold">{{ user.username[0].upper() }}</span>
                             </div>
                         {% endif %}
                     </a>
                     
-                    <div class="p-4">
-                        <h3 class="text-xl font-bold text-gray-800">{{ user.username }}</h3>
-                        <p class="text-gray-600">{{ user.profile.get_age() }} ans</p>
+                    <div class="p-3 sm:p-4">
+                        <h3 class="text-lg sm:text-xl font-bold text-gray-800">{{ user.username }}</h3>
+                        <p class="text-sm sm:text-base text-gray-600">{{ user.profile.get_age() }} ans</p>
                         {% if user.profile.city %}
-                            <p class="text-gray-600 text-sm">{{ user.profile.city }}</p>
+                            <p class="text-gray-600 text-xs sm:text-sm">{{ user.profile.city }}</p>
                         {% endif %}
                         
-                        <div class="mt-4">
-                            <a href="{{ url_for('view_profile', user_id=user.id) }}" class="block w-full text-center bg-purple-600 text-white hover:bg-purple-700 px-4 py-2 rounded-lg font-medium">
+                        <div class="mt-3 sm:mt-4">
+                            <a href="{{ url_for('view_profile', user_id=user.id) }}" class="block w-full text-center bg-purple-600 text-white hover:bg-purple-700 px-3 sm:px-4 py-2 rounded-lg text-sm font-medium">
                                 Voir le profil
                             </a>
                         </div>
@@ -37,15 +37,15 @@
             {% endfor %}
         </div>
         
-        <div class="mt-8 flex justify-center space-x-2">
+        <div class="mt-6 sm:mt-8 flex flex-wrap justify-center gap-2">
             {% if users.has_prev %}
-                <a href="{{ url_for('browse', page=users.prev_num) }}" class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">Précédent</a>
+                <a href="{{ url_for('browse', page=users.prev_num) }}" class="px-3 sm:px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 text-sm sm:text-base">Précédent</a>
             {% endif %}
             
-            <span class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg">Page {{ users.page }} sur {{ users.pages }}</span>
+            <span class="px-3 sm:px-4 py-2 bg-gray-200 text-gray-800 rounded-lg text-sm sm:text-base">Page {{ users.page }} sur {{ users.pages }}</span>
             
             {% if users.has_next %}
-                <a href="{{ url_for('browse', page=users.next_num) }}" class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">Suivant</a>
+                <a href="{{ url_for('browse', page=users.next_num) }}" class="px-3 sm:px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 text-sm sm:text-base">Suivant</a>
             {% endif %}
         </div>
     {% else %}

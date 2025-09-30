@@ -18,8 +18,7 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(80), unique=True, nullable=False, index=True)
     email = db.Column(db.String(120), unique=True, nullable=False, index=True)
     password_hash = db.Column(db.String(255), nullable=False)
-    is_verified = db.Column(db.Boolean, default=False)
-    verification_token = db.Column(db.String(100), unique=True)
+    is_admin = db.Column(db.Boolean, default=False)
     reset_token = db.Column(db.String(100), unique=True)
     reset_token_expiry = db.Column(db.DateTime)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
@@ -41,10 +40,6 @@ class User(UserMixin, db.Model):
     
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
-    
-    def generate_verification_token(self):
-        self.verification_token = secrets.token_urlsafe(32)
-        return self.verification_token
     
     def generate_reset_token(self):
         self.reset_token = secrets.token_urlsafe(32)

@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard Admin - Onlyz{% endblock %}
+
+{% block content %}
+<div class="bg-white rounded-lg shadow-xl p-4 sm:p-6 mb-4 sm:mb-6">
+    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-0 mb-6">
+        <h1 class="text-2xl sm:text-3xl font-bold text-gray-800">📊 Tableau de bord administrateur</h1>
+        <div class="flex items-center gap-2">
+            <span class="bg-purple-600 text-white px-3 py-1 rounded-full text-xs sm:text-sm">Admin: {{ current_user.username }}</span>
+            <a href="{{ url_for('logout') }}" class="bg-red-500 text-white hover:bg-red-600 px-3 sm:px-4 py-1 sm:py-2 rounded-lg text-xs sm:text-sm font-medium">Déconnexion</a>
+        </div>
+    </div>
+    
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <div class="bg-blue-500 text-white rounded-lg p-4 sm:p-5">
+            <h5 class="text-base sm:text-lg font-medium mb-2">👥 Utilisateurs</h5>
+            <h2 class="text-2xl sm:text-3xl font-bold">{{ total_users }}</h2>
+        </div>
+        <div class="bg-green-500 text-white rounded-lg p-4 sm:p-5">
+            <h5 class="text-base sm:text-lg font-medium mb-2">📝 Profils</h5>
+            <h2 class="text-2xl sm:text-3xl font-bold">{{ total_profiles }}</h2>
+        </div>
+        <div class="bg-red-500 text-white rounded-lg p-4 sm:p-5">
+            <h5 class="text-base sm:text-lg font-medium mb-2">💕 Likes</h5>
+            <h2 class="text-2xl sm:text-3xl font-bold">{{ total_matches }}</h2>
+        </div>
+        <div class="bg-cyan-500 text-white rounded-lg p-4 sm:p-5">
+            <h5 class="text-base sm:text-lg font-medium mb-2">💬 Messages</h5>
+            <h2 class="text-2xl sm:text-3xl font-bold">{{ total_messages }}</h2>
+        </div>
+    </div>
+    
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-6">
+        <div class="bg-gray-50 rounded-lg shadow-md overflow-hidden">
+            <div class="bg-gray-100 p-3 sm:p-4 border-b">
+                <h5 class="text-base sm:text-lg font-bold text-gray-800">Utilisateurs récents</h5>
+            </div>
+            <div class="p-3 sm:p-4">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead class="border-b">
+                            <tr class="text-left">
+                                <th class="pb-2 px-2">ID</th>
+                                <th class="pb-2 px-2">Nom</th>
+                                <th class="pb-2 px-2 hidden sm:table-cell">Email</th>
+                                <th class="pb-2 px-2">Inscription</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y">
+                            {% for user in recent_users %}
+                            <tr class="hover:bg-gray-50">
+                                <td class="py-2 px-2">{{ user.id }}</td>
+                                <td class="py-2 px-2">
+                                    {{ user.username }}
+                                    {% if user.is_admin %}
+                                    <span class="bg-red-500 text-white px-2 py-0.5 rounded text-xs ml-1">Admin</span>
+                                    {% endif %}
+                                </td>
+                                <td class="py-2 px-2 hidden sm:table-cell">{{ user.email }}</td>
+                                <td class="py-2 px-2 text-xs sm:text-sm">{{ user.created_at.strftime('%d/%m/%Y') }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-gray-50 rounded-lg shadow-md overflow-hidden">
+            <div class="bg-gray-100 p-3 sm:p-4 border-b">
+                <h5 class="text-base sm:text-lg font-bold text-gray-800">Signalements récents</h5>
+            </div>
+            <div class="p-3 sm:p-4">
+                {% if recent_reports %}
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead class="border-b">
+                            <tr class="text-left">
+                                <th class="pb-2 px-2">ID</th>
+                                <th class="pb-2 px-2">Par</th>
+                                <th class="pb-2 px-2 hidden sm:table-cell">Signalé</th>
+                                <th class="pb-2 px-2">Date</th>
+                                <th class="pb-2 px-2">Statut</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y">
+                            {% for report in recent_reports %}
+                            <tr class="hover:bg-gray-50">
+                                <td class="py-2 px-2">{{ report.id }}</td>
+                                <td class="py-2 px-2">{{ report.reporter.username }}</td>
+                                <td class="py-2 px-2 hidden sm:table-cell">{{ report.reported_user.username }}</td>
+                                <td class="py-2 px-2 text-xs sm:text-sm">{{ report.created_at.strftime('%d/%m/%Y') }}</td>
+                                <td class="py-2 px-2">
+                                    <span class="bg-yellow-400 text-gray-800 px-2 py-0.5 rounded text-xs">{{ report.status }}</span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-gray-500 text-center py-4 text-sm sm:text-base">Aucun signalement pour le moment</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="bg-gray-50 rounded-lg shadow-md">
+        <div class="bg-gray-100 p-3 sm:p-4 border-b">
+            <h5 class="text-base sm:text-lg font-bold text-gray-800">Actions rapides</h5>
+        </div>
+        <div class="p-3 sm:p-4">
+            <div class="flex flex-col sm:flex-row gap-2">
+                <a href="{{ url_for('browse') }}" class="bg-purple-600 text-white hover:bg-purple-700 px-4 py-2 rounded-lg text-center text-sm sm:text-base font-medium">Voir les profils</a>
+                <a href="{{ url_for('index') }}" class="bg-gray-600 text-white hover:bg-gray-700 px-4 py-2 rounded-lg text-center text-sm sm:text-base font-medium">Retour à l'accueil</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

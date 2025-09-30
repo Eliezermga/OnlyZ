@@ -3,20 +3,20 @@
 {% block title %}Notifications - Onlyz{% endblock %}
 
 {% block content %}
-<div class="max-w-3xl mx-auto bg-white rounded-lg shadow-xl p-6">
-    <h2 class="text-3xl font-bold text-gray-800 mb-6">Notifications 🔔</h2>
+<div class="max-w-3xl mx-auto bg-white rounded-lg shadow-xl p-4 sm:p-6">
+    <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-4 sm:mb-6">Notifications 🔔</h2>
     
     {% if notifications %}
-        <div class="space-y-4">
+        <div class="space-y-3 sm:space-y-4">
             {% for notif in notifications %}
-                <div class="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-gray-800">{{ notif.content }}</p>
-                            <p class="text-sm text-gray-500 mt-1">{{ notif.created_at.strftime('%d/%m/%Y à %H:%M') }}</p>
+                <div class="p-3 sm:p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                        <div class="flex-1">
+                            <p class="text-sm sm:text-base text-gray-800">{{ notif.content }}</p>
+                            <p class="text-xs sm:text-sm text-gray-500 mt-1">{{ notif.created_at.strftime('%d/%m/%Y à %H:%M') }}</p>
                         </div>
                         {% if notif.related_user_id %}
-                            <a href="{{ url_for('view_profile', user_id=notif.related_user_id) }}" class="bg-purple-600 text-white hover:bg-purple-700 px-4 py-2 rounded-lg text-sm font-medium">
+                            <a href="{{ url_for('view_profile', user_id=notif.related_user_id) }}" class="bg-purple-600 text-white hover:bg-purple-700 px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium text-center whitespace-nowrap">
                                 Voir le profil
                             </a>
                         {% endif %}
