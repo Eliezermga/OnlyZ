@@ -1,23 +1,51 @@
-# render.yaml
+# Render blueprint for OnlyZ (Flask app)
+# Les variables sensibles (mot de passe, secret, etc.) sont définies ici mais doivent idéalement
+# être ajoutées directement dans le dashboard Render pour plus de sécurité.
+
 services:
   - type: web
-    name: onlyz
+    name: onlyz-web
+    env: python
+    branch: main
+    plan: free
+    region: oregon
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app --bind 0.0.0.0:$PORT
+    healthCheckPath: /
+    envVars:
+      - key: SESSION_SECRET
+        value: your_session_secret_here
+      - key: DATABASE_URL
+        value: postgresql://onlyz_user:YUwkYjyPlR7ACoZUFgileCR8fV4kJC53@dpg-d3dpleb7mgec73d2v500-a/onlyz
+      - key: PORT
+        value: 3000
+      - key: PGDATABASE
+        value: onlyz
+      - key: PGUSER
+        value: onlyz_user
+      - key: PGPASSWORD
+        value: YUwkYjyPlR7ACoZUFgileCR8fV4kJC53
+      - key: PGHOST
+        value: dpg-d3dpleb7mgec73d2v500-a
+      - key: PGPORT
+        value: 5432
+      - key: ADMIN_PASSWORD
+        value: 31082003
+    disk: 1GB
+
+databases:
+  - name: onlyZ
+    engine: postgresql
+    plan: starter
+    region: oregon
+    databaseName: onlyz
+
+# Commande pour initialiser la base de données après déploiement
+# Si vous utilisez Flask-Migrate, cette commande appliquera les migrations.
+# Sinon, db.create_all() créera les tables définies dans vos modèles.
+cron:
+  - name: init-database
+    schedule: "@once"
+    command: bash -lc "flask db upgrade || python -c 'from app import app, db; app.app_context().push(); db.create_all()'"
     env: python
     plan: free
-    region: frankfurt
-    
-    buildCommand: |
-      pip install -r requirements.txt
-      python -c "
-      from app import app, db
-      with app.app_context():
-          print('🔧 Création des tables...')
-          db.create_all()
-          print('✅ Base de données initialisée avec succès')
-      "
-    
-    startCommand: gunicorn app:app --bind 0.0.0.0:$PORT
-    
-    envVars:
-      - key: FLASK_APP
-        value: app.py
