@@ -14,7 +14,7 @@ services:
     healthCheckPath: /
     envVars:
       - key: SESSION_SECRET
-        value: your_session_secret_here
+        value: c23f4e03d0908a22ffddc346730bbcaf
       - key: DATABASE_URL
         value: postgresql://onlyz_user:YUwkYjyPlR7ACoZUFgileCR8fV4kJC53@dpg-d3dpleb7mgec73d2v500-a/onlyz
       - key: PORT
