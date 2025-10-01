@@ -369,9 +369,6 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-## 📝 Licence
-
-Ce projet est fourni à titre éducatif et de démonstration.
 
 ## 👥 Contribution
 
