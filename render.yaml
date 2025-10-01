@@ -9,7 +9,9 @@ services:
     branch: main
     plan: free
     region: oregon
-    buildCommand: pip install -r requirements.txt
+    buildCommand: |
+      pip install -r requirements.txt
+      flask db upgrade || python -c "from app import app, db; app.app_context().push(); db.create_all()"
     startCommand: gunicorn app:app --bind 0.0.0.0:$PORT
     healthCheckPath: /
     envVars:
@@ -31,21 +33,12 @@ services:
         value: 5432
       - key: ADMIN_PASSWORD
         value: 31082003
-    disk: 1GB
+
 
 databases:
   - name: onlyZ
-    engine: postgresql
     plan: starter
     region: oregon
     databaseName: onlyz
 
-# Commande pour initialiser la base de données après déploiement
-# Si vous utilisez Flask-Migrate, cette commande appliquera les migrations.
-# Sinon, db.create_all() créera les tables définies dans vos modèles.
-cron:
-  - name: init-database
-    schedule: "@once"
-    command: bash -lc "flask db upgrade || python -c 'from app import app, db; app.app_context().push(); db.create_all()'"
-    env: python
-    plan: free
+
