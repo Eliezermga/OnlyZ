@@ -709,6 +709,8 @@ if __name__ == '__main__':
         from flask_migrate import upgrade
         upgrade()
         admin_password = os.getenv('ADMIN_PASSWORD')
+        print("admin_password:", admin_password)
+        print("admin exists:", User.query.filter_by(email='admin@onlyz.com').first())
         if not User.query.filter_by(email='admin@onlyz.com').first() and admin_password:
             admin = User(
                 username='admin',
