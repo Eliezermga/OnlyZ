@@ -706,8 +706,18 @@ L'équipe Onlyz
 
 if __name__ == '__main__':
     with app.app_context():
-        db.create_all()
-        if not User.query.first():
-            print("Création des tables...")
-    port = int(os.environ.get('PORT', 10000))  # Render fournit le port dans PORT
-    socketio.run(app, host='0.0.0.0', port=port, debug=True, allow_unsafe_werkzeug=True)
+        from flask_migrate import upgrade
+        upgrade()
+        admin_password = os.getenv('ADMIN_PASSWORD')
+        if not User.query.filter_by(email='admin@onlyz.com').first() and admin_password:
+            admin = User(
+                username='admin',
+                email='admin@onlyz.com',
+                is_admin=True,
+                accepted_terms=True
+            )
+            admin.set_password(admin_password)
+            db.session.add(admin)
+            db.session.commit()
+    port = int(os.environ.get('PORT', 10000))
+    socketio.run(app, host='0.0.0.0', port=port)
