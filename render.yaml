@@ -16,23 +16,23 @@ services:
     healthCheckPath: /
     envVars:
       - key: SESSION_SECRET
-        value: c23f4e03d0908a22ffddc346730bbcaf
+        value: your_session_secret_here
       - key: DATABASE_URL
-        value: postgresql://onlyz_user:YUwkYjyPlR7ACoZUFgileCR8fV4kJC53@dpg-d3dpleb7mgec73d2v500-a/onlyz
+        value:your_database_url_here
       - key: PORT
         value: 3000
       - key: PGDATABASE
-        value: onlyz
+        value: your_database_name_here
       - key: PGUSER
-        value: onlyz_user
+        value: your_database_user_here
       - key: PGPASSWORD
-        value: YUwkYjyPlR7ACoZUFgileCR8fV4kJC53
+        value: yourpgpassword_here
       - key: PGHOST
-        value: dpg-d3dpleb7mgec73d2v500-a
+        value: yourpg_host_here
       - key: PGPORT
         value: 5432
       - key: ADMIN_PASSWORD
-        value: 31082003
+        value:your_admin_password_here
 
 
 databases:
